@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Reader Test</title>
+    <style>
+        .sr-only {
+            position: absolute;
+            clip: rect(0, 0, 0, 0);
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+        .hidden-indent { text-indent: -9999px; }
+        .hidden-opacity { opacity: 0; }
+    </style>
+</head>
+<body>
+    <!--
+    --------------------------------
+
+    You can compare the event test case, by the output prefix [<number>] text in the devtools console.
+
+    --------------------------------
+    -->
+
+    <!-- 0. Very long sentence to test canvas overflow splitting -->
+<!--    <p>[0] This is an extremely long sentence designed specifically to test the oversized sentence splitting feature of the video player, because when a sentence contains so many words that the wrapped lines exceed the vertical height of the canvas, the player must automatically break it into multiple chunks that each fit within the available space, and each chunk should be displayed as its own separate segment with independent fade-in and fade-out animations, ensuring that no text is ever clipped or hidden beyond the bottom edge of the canvas, which is especially important for accessibility and readability, and this sentence intentionally keeps going and going with additional clauses and phrases to guarantee that it will overflow even a generously sized canvas, so that we can verify the splitting logic works correctly under real conditions with long-form content that might appear on verbose web pages or articles with run-on sentences that never seem to end.</p>-->
+
+    <!-- 1. Bare text node directly in body -->
+    [1] Bare text node directly in body without any wrapper element.
+
+    <!-- 2. Simple block elements -->
+    <p>[2] Single sentence inside a paragraph tag.</p>
+    <span>[3] Standalone span element as direct body child.</span>
+
+    <!-- 3. Multiple sentences in one block -->
+    <p>[4] First sentence in a multi-sentence paragraph. Second sentence follows. Third sentence ends it.</p>
+
+    <!-- 4. Nested inline tags within a block -->
+    <p>[5] Paragraph with a <b>bold</b> word and an <i>italic</i> word inside.</p>
+
+    <!-- 5. Deeply nested inline tags -->
+    <p>[6] Paragraph with <em>deeply <strong>nested</strong> inline</em> tags three levels deep.</p>
+
+    <!-- 6. Link inside paragraph -->
+    <p>[7] Paragraph containing <a href="#">an inline link</a> within the text.</p>
+
+    <!-- 7. Adjacent inline elements inside a div -->
+    <div>[8] <b>Adjacent bold</b> <i>then italic</i> <u>then underline</u> inside a div.</div>
+
+    <!-- 8. Nested structural wrappers -->
+    <div>
+        <div>
+            <p>[9] Paragraph inside nested divs, first paragraph.</p>
+            <p>[10] Paragraph inside nested divs, second paragraph.</p>
+        </div>
+    </div>
+
+    <!-- 9. List items -->
+    <ul>
+        <li>[11] List item plain text.</li>
+        <li>[12] List item with <strong>bold inline</strong> tag.</li>
+        <li>[13] List item with <em>italic inline</em> tag.</li>
+    </ul>
+
+    <!-- 10. Hidden elements — should NOT appear -->
+    <p style="display:none">[!] Hidden via display none, should be excluded.</p>
+    <p style="visibility:hidden">[!] Hidden via visibility hidden, should be excluded.</p>
+    <div hidden>[!] Hidden via hidden attribute, should be excluded.</div>
+    <span class="sr-only">[!] Hidden via sr-only clip pattern, should be excluded.</span>
+    <p class="hidden-indent">[!] Hidden via negative text-indent, should be excluded.</p>
+    <p class="hidden-opacity">[!] Hidden via zero opacity, should be excluded.</p>
+
+    <!-- 11. Empty elements — should produce nothing -->
+    <p></p>
+    <div>   </div>
+    <span></span>
+
+    <!-- 12. Span wrapping bold inside a div -->
+    <div><span>[14] Span with <b>nested bold</b> inside a div.</span></div>
+
+    <!-- 13. Code and abbreviation inline tags -->
+    <p>[15] Paragraph with <code>inline code</code> and <abbr title="abbreviation">abbr</abbr> tags.</p>
+
+    <!-- 14. Whitespace normalization -->
+    <p>
+        [16] Text      with    extra     spaces	and
+        tabs     should     normalize    to   single   spaces.
+    </p>
+
+    <!-- 15. Special characters and punctuation -->
+    <p>[17] Special chars: $49.99 — 20% discount! Worth it? Absolutely.</p>
+
+    <!-- 16. Article > section > paragraph nesting -->
+    <article>
+        <section>
+            <p>[18] Paragraph inside section inside article with <mark>marked text</mark>.</p>
+        </section>
+    </article>
+
+    <!-- 17. Table cells -->
+    <table>
+        <tr>
+            <td>[19] Table cell one plain text.</td>
+            <td>[20] Table cell two with <strong>bold</strong>.</td>
+        </tr>
+        <tr>
+            <td>[21] Table cell three.</td>
+            <td>[22] Table cell four.</td>
+        </tr>
+    </table>
+
+    <!-- 18. Definition list -->
+    <dl>
+        <dt>[23] Definition term.</dt>
+        <dd>[24] Definition description with <em>italic inline</em> tag.</dd>
+    </dl>
+
+    <!-- 19. Blockquote with nested inline -->
+    <blockquote>
+        <p>[25] Blockquote paragraph with <strong>bold inline</strong> tag.</p>
+    </blockquote>
+
+    <!-- 20. Figure with caption -->
+    <figure>
+        <img src="placeholder.jpg" alt="placeholder">
+        <figcaption>[26] Figcaption with <i>italic inline</i> tag.</figcaption>
+    </figure>
+
+    <!-- 21. ARIA roles — should NOT appear -->
+    <div role="navigation">[!] Navigation role, should be excluded.</div>
+    <div role="button">[!] Button role, should be excluded.</div>
+    <div role="menu"><span>[!] Menu role, should be excluded.</span></div>
+
+    <!-- 22. Form elements — should NOT appear -->
+    <input type="text" value="[!] Input should be excluded">
+    <textarea>[!] Textarea should be excluded</textarea>
+    <label>[!] Label should be excluded</label>
+    <select><option>[!] Option should be excluded</option></select>
+
+    <!-- 23. Interactive/structural elements — should NOT appear -->
+    <button>[!] Button element, should be excluded.</button>
+    <nav><a href="#">[!] Nav element, should be excluded.</a></nav>
+    <header><p>[!] Header element, should be excluded.</p></header>
+    <footer><p>[!] Footer element, should be excluded.</p></footer>
+
+    <script type="text/javascript" src="page-reader.js"></script>
+</body>
+</html>
