@@ -30,6 +30,10 @@ any page.
 
 ---
 
+## Implementation
+
+---
+
 ### Text Extraction
 
 I've used AI for discussing the right way of extracting the text.
@@ -76,7 +80,3 @@ For the browser support on Chrome v.121 or higher and Safari v.17 or higher:
 - I've checked most of the syntax features like (arrow functions, Promises etc.) - manually using https://caniuse.com/. 
 - Also used AI to do a final check of my entire code if it is supported.
 - Finally tested it on: https://www.browserstack.com/
-
----
-
-(I know that the task was not to make it look like a TV with CSS, but I wanted it to be more fun, because it is an interview task)
